@@ -10,11 +10,13 @@ public class App {
         
         List<String> familyMembers = iceCream.getFamilyMembers();
 
-        for (String aMemeber : familyMembers) {
-            System.out.println("Welcome " + aMemeber + "!");
+        for (String aMember : familyMembers) {
+            System.out.println("Welcome " + aMember + "!");
             iceCream.displayFlavors();
             iceCream.addVote();
-            System.out.println("Thank you for your vote " + aMemeber + "!");
+            System.out.println("Thank you for your vote " + aMember + "!\n");
         }
+
+        iceCream.displayFinalVotes();
     }
 }

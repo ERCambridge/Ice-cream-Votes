@@ -13,6 +13,8 @@ public class IceCream {
     private Map<String,Integer>votes = new HashMap<String,Integer>();
     private List<String> familyMembers = new ArrayList<String>();
 
+    Scanner scanner = new Scanner(System.in);
+
     public Set<String> getFlavors() {
         return flavors;
     }
@@ -45,52 +47,57 @@ public class IceCream {
 
     private String validateFlavor(){
         System.out.println("\nProvide your favorite flavor:");
-        boolean validflavor = false;
+        boolean validFlavor = false;
         String userFlavor = "";
-        Scanner scanner = new Scanner(System.in);
+        
+        int currentIteration = 0;
         do {
-            userFlavor = scanner.nextLine().toLowerCase();
+            
+            if (currentIteration > 0){
+                System.out.println("Please enter a valid flavor");
+            }
+                userFlavor = scanner.next().toLowerCase().trim();
+
             for (String aFlavor : flavors) {
-                if(aFlavor == userFlavor){
-                    validflavor = true;                   
+                
+                if(aFlavor.equals(userFlavor)){
+                    validFlavor = true;                   
                 }              
             }
-        }while(!validflavor);
-        scanner.close();
+            currentIteration++;
+        }while(!validFlavor);
         return userFlavor;
     }
 
-public void addVote(){
-    String userFlavor = validateFlavor();
-    Set<String> flavorKeys = votes.keySet();
-    boolean hasVotes = false;
-    for (String aKey : flavorKeys) {
-        if (aKey == userFlavor) {
-            votes.put(aKey, votes.get(aKey + 1));
-            hasVotes = true;
+    public void addVote(){
+        String userFlavor = validateFlavor();
+        Set<String> flavorKeys = votes.keySet();
+        boolean hasVotes = false;
+        for (String aKey : flavorKeys) {
+            if (aKey.equals(userFlavor)) {
+                votes.put(aKey, votes.get(aKey)+1);
+                hasVotes = true;
+            }
+        }
+        if(!hasVotes){
+            votes.put(userFlavor, 1);
         }
     }
-    if(!hasVotes){
-        votes.put(userFlavor, 1);
+
+    public void displayFinalVotes(){
+        Set<String> keys = votes.keySet();
+        int highestVotes = 0;
+        System.out.println("The flavors with the most votes are:");
+        for (String aKey : keys) {
+                if (votes.get(aKey) > highestVotes){
+                    highestVotes = votes.get(aKey);
+                }
+            }
+        for (String aKey : keys) {
+            if (votes.get(aKey).equals(highestVotes)){
+                System.out.println(aKey);
+            }
+        } 
+        scanner.close();
     }
-}
-
-public void displayFinalVotes(){
-    Set<String> keys = votes.keySet();
-    String firstPlace = "chocolate";
-    String secondPlace = "chocolate";
-    for (String aKey : keys) {
-        if (votes.get(aKey) > (votes.get(firstPlace))){
-            firstPlace = aKey;
-        }
-        if ((votes.get(aKey) < votes.get(firstPlace)) && (votes.get(aKey) > votes.get(secondPlace))){
-            secondPlace = aKey;
-        }
-    }
-    System.out.println("The flavors with the most votes are:");
-    System.out.println(firstPlace);
-    System.out.println(secondPlace);
-}
-
-
 }
